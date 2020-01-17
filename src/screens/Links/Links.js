@@ -1,37 +1,27 @@
-import React from 'react';
-import firebase from "../../firebase";
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import firebase from "../../firebase";
 
 const Links = () => {
-  const history = useHistory()
-  const logout = () => {
-    firebase.logout()
-    .then(() => {
-      history.push('/login')
-    })
-    .catch(() => {
+  // let history = useHistory();
+  const [state, setState] = useState({ description: '', url: '' });
+  const { description, url } = state;
 
-    })
+  const handleInputChange = ({ target: { name, value } }) => {
+    setState({ ...state, [name]: value });
   }
 
+  const onSubmit = () => {
+    //...
+  }
   return (
     <div className="wrapper">
-      <div className="contact">
-        <div className='wrapper-header'>
-          <h3>Links</h3>
-          <button className='logoutbtn' onClick={logout}>Logout</button>
-        </div>
-        {[1, 2].map((item) => {
-          return (
-            <div key={item} className="link-card">
-              <div className='link-description'>Description</div>
-              <div>React documentation</div>
-              <span className='link-url'>React.js</span>
-            </div>
-          )
-        })}
-      </div>
+    <div className="contact">
+      <input value={description} onChange={handleInputChange} type="text" name="description" placeholder='Description'/>
+      <input value={url} onChange={handleInputChange} type="url" name="url" placeholder="Url"/>
+      <button onClick={onSubmit} name="submit" type="submit">Create</button>
     </div>
+  </div>
   );
 };
 
