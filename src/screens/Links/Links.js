@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import firebase from "../../firebase";
+ import { FirebaseContext } from '../../firebase';
 
 const Links = () => {
-  // let history = useHistory();
+  let history = useHistory();
+  const { user, firebase } = useContext(FirebaseContext)
   const [state, setState] = useState({ description: '', url: '' });
   const { description, url } = state;
-
   const handleInputChange = ({ target: { name, value } }) => {
     setState({ ...state, [name]: value });
   }
 
   const onSubmit = () => {
-    //...
+    const newLink = {
+      description,
+      url,
+      created: Date.now(),
+      postedBy: {
+        id: user.uid,
+        displayName: user.displayName
+      },
+      votes: []
+    };
+
+    firebase.db.collection('links').add(newLink)
+    .then(() => {
+      history.push('/linklist')
+    })
+    .catch((err) => {
+      console.log('ERROR WHILE CREATE LINK: ', err)
+    })
   }
   return (
     <div className="wrapper">

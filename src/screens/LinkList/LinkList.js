@@ -1,10 +1,27 @@
-import React from 'react';
-import firebase from "../../firebase";
+import React, { useState, useEffect, useContext } from 'react';
+import { FirebaseContext } from "../../firebase";
 import { useHistory } from 'react-router-dom';
 
 
 const LinkList = () => {
-  const history = useHistory()
+  const [links, setLinks] = useState([]);
+  const history = useHistory();
+  const { user, firebase } = useContext(FirebaseContext);
+
+  const getLinks = async () => {
+    // const snapshot = await firebase.db.collection('links').get();
+    // const links = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    // setLinks(links)
+    firebase.db.collection('links').onSnapshot((snapshot) => {
+      const links = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setLinks(links)
+    })
+  }
+
+  useEffect(() => {
+    getLinks();
+  }, [])
+
   const logout = () => {
     firebase.logout()
     .then(() => {
@@ -22,12 +39,12 @@ const LinkList = () => {
           <h3>Links</h3>
           <button className='logoutbtn' onClick={logout}>Logout</button>
         </div>
-        {[1, 2].map((item) => {
+        {links.map((link) => {
           return (
-            <div key={item} className="link-card">
+            <div key={link.id} className="link-card">
               <div className='link-description'>Description</div>
-              <div>React documentation</div>
-              <span className='link-url'>React.js</span>
+              <div>{link.description}</div>
+              <a href={link.url} className='link-url'>{link.url}</a>
             </div>
           )
         })}

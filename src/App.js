@@ -11,29 +11,32 @@ import LinkList from './screens/LinkList';
 import Register from './screens/Register';
 import './styles/forms.styles.css'
 import useAuth from "./components/Auth/useAuth";
+import firebase, { FirebaseContext } from "./firebase";
 
 
 function App() {
-  useAuth();
+  const user = useAuth();
   return (
-    <div style={{ margin: "0 auto", textAlign: "center" }}>
-      <Router>
-        <Switch>
-          <Route path="/linklist">
-            <LinkList />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <PrivateRoute path="/link">
-            <Links />
-          </PrivateRoute>
-        </Switch>
-      </Router>
-    </div>
+    <FirebaseContext.Provider value={{ user, firebase }}>
+      <div style={{ margin: "0 auto", textAlign: "center" }}>
+        <Router>
+          <Switch>
+            <Route path="/linklist">
+              <LinkList />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute path="/links">
+              <Links />
+            </PrivateRoute>
+          </Switch>
+        </Router>
+      </div>
+    </FirebaseContext.Provider>
   );
 }
 
