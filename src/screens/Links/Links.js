@@ -20,6 +20,7 @@ const Links = () => {
         id: user.uid,
         displayName: user.displayName
       },
+      comments: [],
       votes: []
     };
 
