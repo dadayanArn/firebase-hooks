@@ -17,6 +17,7 @@ const Login = (props) => {
         history.push('/links')
       })
       .catch((err) => {
+      console.log(err.message);
         // set error message here
       })
   }

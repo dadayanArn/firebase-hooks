@@ -5,6 +5,7 @@ import firebase from '../../firebase';
 
 const Register = () => {
   const [state, setState] = useState({ name: '', email: '', password: '' });
+  const [picture, setPicture] = useState(null)
   const { name, email, password } = state; 
   let history = useHistory();
 
@@ -15,7 +16,7 @@ const Register = () => {
 
   const onSubmit = () => {
     const { name, email, password } = state; 
-    firebase.register(name, email, password )
+    firebase.register(name, email, password, picture )
       .then(response => {
         history.push('/login');
       })
@@ -30,6 +31,7 @@ const Register = () => {
         <input value={name} name="name" onChange={handleInputChange} type="text" placeholder='Name'/>
         <input value={email} name="email" onChange={handleInputChange} type="email" placeholder='Email'/>
         <input value={password} name="password" onChange={handleInputChange} type="password" placeholder="Password"/>
+        <input type="file" onChange={(e) => setPicture(e.target.files[0])}/>
         <button onClick={onSubmit} name="submit" type="submit">Submit</button>
       </div>
     </div>

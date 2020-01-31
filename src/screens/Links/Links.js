@@ -29,12 +29,15 @@ const Links = () => {
       history.push('/linklist')
     })
     .catch((err) => {
-      console.log('ERROR WHILE CREATE LINK: ', err)
+      console.log('ERROR WHILE CREATE LINK: ', err  )
     })
   }
   return (
     <div className="wrapper">
     <div className="contact">
+      <div className="avatar-wrapp">
+        <img className="avatar" src={user && user.photoURL} alt=""/>
+      </div>
       <input value={description} onChange={handleInputChange} type="text" name="description" placeholder='Description'/>
       <input value={url} onChange={handleInputChange} type="url" name="url" placeholder="Url"/>
       <button onClick={onSubmit} name="submit" type="submit">Create</button>
